@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EmployeeLogin = () => {
   const navigate = useNavigate();
@@ -15,12 +16,18 @@ const EmployeeLogin = () => {
       // console.log(res);
       // console.log(res.data.token);      
       // console.log(res.data.employee);
-      
+      toast.success(res.data.message,{
+        position:"top-right",
+        duration:2000
+      })
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.employee));
       navigate("/dashboard");
     } catch (err) {
-      alert(err.response.data.message);
+      toast.error(err.response.data.message,{
+        position:'top-right',
+        duration:2000
+      });
     }
   };
 

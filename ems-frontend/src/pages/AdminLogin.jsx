@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -16,10 +17,17 @@ const AdminLogin = () => {
     // Save token and admin info
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("user", JSON.stringify(res.data.admin));
+     toast.success(res.data.message,{
+      position: "top-right",
+      duration:2000
+    });
 
     navigate("/admin-dashboard");
   } catch (err) {
-    alert(err.response?.data?.message || err.message);
+    toast.error(err.response?.data?.message || err.message,{
+      position:"top-right",
+      duration:2000
+    });
   }
 };
 

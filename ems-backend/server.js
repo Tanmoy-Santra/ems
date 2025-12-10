@@ -3,6 +3,9 @@ const express = require("express");
 const db = require("./src/config/db");
 const authRoutes = require("./src/routes/auth.routes");
 const employeeRoutes = require("./src/routes/employee.routes");
+
+const noticeRoutes = require("./src/routes/notice.routes");
+const applicationRoutes = require("./src/routes/application.routes")
 require("dotenv").config();
 
 
@@ -36,7 +39,8 @@ app.get("/test", async (req, res) => {
 app.use("/api/auth", authRoutes);        // register/login
 app.use("/api/employee",employeeRoutes);
 
-
+app.use("/api/notices", noticeRoutes);
+app.use("/api/applications",applicationRoutes);
 // Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

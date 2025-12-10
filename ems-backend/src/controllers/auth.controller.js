@@ -72,7 +72,7 @@ exports.loginEmployee = async (req, res) => {
       {
         id: employee.id,
         userId: employee.userId,
-        role: "employee",
+        role: employee.system_role,
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -123,7 +123,7 @@ exports.loginAdmin = async (req, res) => {
       {
         id: admin.id,
         userId: admin.userId,
-        role: "admin",
+        role: admin.system_role,
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
