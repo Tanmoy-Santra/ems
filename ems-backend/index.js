@@ -6,6 +6,7 @@ const employeeRoutes = require("./src/routes/employee.routes");
 
 const noticeRoutes = require("./src/routes/notice.routes");
 const applicationRoutes = require("./src/routes/application.routes")
+const attendanceRoutes = require("./src/routes/attendence.routes")
 require("dotenv").config();
 
 
@@ -41,6 +42,7 @@ app.use("/api/employee",employeeRoutes);
 
 app.use("/api/notices", noticeRoutes);
 app.use("/api/applications",applicationRoutes);
+app.use("/api/attendance",attendanceRoutes);
 // Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

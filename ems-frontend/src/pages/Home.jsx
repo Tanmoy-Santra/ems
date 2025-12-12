@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import emsImage from "../assets/EmpImg.png";import { useEffect } from "react";
+import ems from "../assets/ems.png";import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -23,7 +23,7 @@ const Home = () => {
         {/* Left Image Section */}
         <div className="md:w-1/2 w-full h-40 md:h-auto">
           <img
-            src={emsImage}
+            src={ems}
             alt="Employee Management"
             className="w-full h-full object-cover"
           />

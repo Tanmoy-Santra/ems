@@ -6,6 +6,7 @@ import letterImg from "../assets/letter.png"
 import rulesImg from "../assets/rules.png"
 import profileImg from "../assets/profile.png";
 import fancyImg from "../assets/fancyImg.png";
+import attendenceImg from "../assets/attendence.png"
 import { toast } from "react-toastify";
 const Dashboard = () => {
   const storedUser = localStorage.getItem("user");
@@ -102,6 +103,20 @@ const Dashboard = () => {
             <div>
               <h3 className="font-bold">Rules & About</h3>
               <p className="text-sm text-gray-600">Company rules & info</p>
+            </div>
+          </div>
+          {/* Track Attendance */}
+          <div
+            onClick={() => navigate("/track-attendance")}
+            className="flex items-center gap-4 bg-pink-200 shadow-md rounded-lg p-4 cursor-pointer hover:bg-yellow-100"
+          >
+            <img 
+              src={attendenceImg} 
+              className="w-12 h-12"
+            />
+            <div>
+              <h3 className="font-bold">Track Attendance</h3>
+              <p className="text-sm text-gray-600">View your attendance history</p>
             </div>
           </div>
 

@@ -4,6 +4,42 @@ import Navbar from "../components/Navbar";
 import { toast } from "react-toastify";
 
 const NoticeBoard = () => {
+
+  const logout = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/auth/logout-employee`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success(res.data.message,{
+      position: "top-right",
+      duration:2000
+    });
+
+    // Remove saved user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Redirect user to login page
+    window.location.href = "/";
+  } catch (err) {
+    console.log(err);
+     toast.error(err,{
+      position: "top-right",
+      duration:2000
+    });
+
+  }
+};
+
   const user = JSON.parse(localStorage.getItem("user"));
   const [notices, setNotices] = useState([]);
 
@@ -33,7 +69,7 @@ const NoticeBoard = () => {
 
   return (
     <div>
-      <Navbar user={user} />
+      <Navbar user={user} logout={logout}/>
 
       <div className="max-w-4xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-5 text-center">📢 Notice Board</h2>

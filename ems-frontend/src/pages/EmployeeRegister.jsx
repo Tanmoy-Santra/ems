@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EmployeeRegister = () => {
   const navigate = useNavigate();
@@ -21,10 +22,16 @@ const EmployeeRegister = () => {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, form);
-      alert(res.data.message);
+      toast.success(res.data.message,{
+        position:"top-right",
+        duration:2000
+      });
       navigate("/employee-login");
     } catch (err) {
-      alert(err.response.data.message);
+      toast.error(err.response.data.message,{
+        position:"top-right",
+        duration:2000
+      });
     }
   };
 

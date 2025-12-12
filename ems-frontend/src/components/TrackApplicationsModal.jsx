@@ -28,37 +28,75 @@ const TrackApplicationsModal = ({ onClose }) => {
 
   useEffect(() => {
     fetchApplications();
-  }, []);
+  },[reply]);
 
   // send reply + status
-  const sendReply = async (id) => {
-    if (!reply) return toast.error("Reply cannot be empty");
-    console.log(status,reply);
-    
-    try {
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/applications/reply/${id}`,
-        { reply, status },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+const sendReply = async (id) => {
+  if (!reply) {
+    return toast.error("Reply cannot be empty", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  }
 
-      toast.success("Reply sent",{
-        position:"top-right",
-        duration:2000
-      });
-      setReply("");
-      setStatus("Approved"); // reset dropdown
-      setSelectedId(null);
-      fetchApplications();
-    } catch {
-      toast.error("Failed to send reply",{
-        position:"top-center",
-        duration:2000
-      });
-    }
-  };
+  console.log("Sending →", { reply, status });
+
+  try {
+    const res = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/applications/reply/${id}`,
+      { reply, status },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    console.log("Server Response →", res.data);
+    alert(res.data.message);
+    toast.success("Reply sent successfully", {
+      position: "top-right",
+      autoClose: 1200,
+
+      // CLOSE MODAL ONLY AFTER TOAST IS SHOWN
+      onClose: () => {
+        if (typeof onClose === "function") onClose();
+      },
+    });
+
+    // clear inputs
+    setReply("");
+    setStatus("Approved");
+
+    // refresh list
+    fetchApplications();
+
+  } catch (err) {
+    console.log("Reply Error →", err?.response?.data || err);
+
+    toast.error("Failed to send reply", {
+      position: "top-center",
+      autoClose: 2000,
+    });
+  }
+};
+
+ const extractTime12 = (timestamp) => {
+  const d = new Date(timestamp);
+  return d.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
+const extractFullDate = (timestamp) => {
+  const d = new Date(timestamp);
+  return d.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
@@ -88,6 +126,7 @@ const TrackApplicationsModal = ({ onClose }) => {
             <p><b>Email:</b> {app.email}</p>
             <p><b>Subject:</b> {app.subject}</p>
             <p><b>Description:</b> {app.description}</p>
+            <p><b>Date:</b> {extractFullDate(app.created_at)} , {extractTime12(app.created_at)}</p>
             <p>
               <b>Status:</b>{" "}
               <span className={`font-semibold ${
@@ -129,7 +168,7 @@ const TrackApplicationsModal = ({ onClose }) => {
                   </select>
 
                   <button
-                    onClick={() => sendReply(app.id)}
+                    onClick={()=>sendReply(app.id)}
                     className="bg-blue-600 text-white px-4 py-1 rounded"
                   >
                     Send Reply

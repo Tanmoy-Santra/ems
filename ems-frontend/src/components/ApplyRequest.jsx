@@ -14,7 +14,40 @@ const ApplyRequest = () => {
   });
 
   const [applications, setApplications] = useState([]);
+  const logout = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/auth/logout-employee`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success(res.data.message,{
+      position: "top-right",
+      duration:2000
+    });
+
+    // Remove saved user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Redirect user to login page
+    window.location.href = "/";
+  } catch (err) {
+    console.log(err);
+     toast.error(err,{
+      position: "top-right",
+      duration:2000
+    });
+
+  }
+};
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -75,7 +108,7 @@ const ApplyRequest = () => {
 
   return (
     <div>
-      <Navbar user={user} logout={() => {}} />
+      <Navbar user={user} logout={logout} />
 
       <div className="min-h-screen bg-gray-100 p-4">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import AddNotice from "../components/AddNotice";
 import ShowNoticeModal from "../components/ShowNoticeModal";
 import TrackApplicationsModal from "../components/TrackApplicationsModal";
+import TodayAttendanceModal from "../components/TodayAttendanceModal";
+import EmployeeAttendanceModal from "../components/EmployeeAttendanceModal";
 const AdminDashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -16,9 +18,21 @@ const AdminDashboard = () => {
   const [showNoticeModal, setShowNoticeModal] = useState(false);
   const [NoticeModal, setNoticeModal] = useState(false);
    const [showTrackModal, setShowTrackModal] = useState(false);
+const [showTodayModal, setShowTodayModal] = useState(false);
+const [showByIdModal, setShowByIdModal] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
+
+
+  const extractFullDate = (timestamp) => {
+  const d = new Date(timestamp);
+  return d.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+};
 
   // Fetch employees
 
@@ -149,11 +163,18 @@ const AdminDashboard = () => {
             <button className="bg-blue-600 py-2 rounded" onClick={() => setShowNoticeModal(true)}>Add Notice</button>
             <button className="bg-green-600 py-2 rounded"onClick={() => setNoticeModal(true)}>Show Notice</button>
             <button className="bg-purple-600 py-2 rounded">Send Email</button>
-            <button className="bg-yellow-500 text-black py-2 rounded"  onClick={() => setShowTrackModal(true)}>
+            <button className="bg-yellow-500 text-black py-2 rounded"  onClick={() => setShowTrackModal(true)}>            
               Track Applications
             </button>
-          </div>
-        </aside>
+            <button className="bg-blue-600 py-2 rounded" onClick={() => setShowTodayModal(true)}>
+              Check Today Attendance
+            </button>
+            <button className="bg-green-600 py-2 rounded"  onClick={() => setShowByIdModal(true)}
+                >
+                  Check Employee Attendance
+                </button>
+              </div>                        
+         </aside>
 
         {/* Main Content */}
         <main className="flex-1 p-4 md:ml-0">
@@ -232,7 +253,7 @@ const AdminDashboard = () => {
                 <p><b>Phone:</b> {emp.phone}</p>
                 <p><b>Address:</b> {emp.address}</p>
                 <p><b>Department:</b> {emp.department}</p>
-                <p><b>Joining Date:</b> {emp.joining_date}</p>
+                <p><b>Joining Date:</b> {extractFullDate(emp.joining_date)}</p>
                 <p>
                   <b>
                     {emp.isBlocked ? (
@@ -270,10 +291,12 @@ const AdminDashboard = () => {
         onClose={() => setShowTrackModal(false)}
       />
     )}
-
-
-
-
+   {showTodayModal && (
+     <TodayAttendanceModal onClose={() => setShowTodayModal(false)} />
+    )}
+    {showByIdModal && (
+     <EmployeeAttendanceModal onClose={() => setShowByIdModal(false)} />
+    )}
     </div>
   );
 };

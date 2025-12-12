@@ -12,12 +12,14 @@ import MyProfile from "./pages/MyProfile";
 import About from "./pages/About";
 import { ToastContainer } from "react-toastify";
 import ApplyRequest from "./components/ApplyRequest";
+import GiveAttendance from "./pages/GiveAttendance";
+import TrackAttendance from "./pages/TrackAttendance";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />} />        
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/employee-login" element={<EmployeeLogin />} />
         <Route path="/employee-register" element={<EmployeeRegister />} />
@@ -57,6 +59,23 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/give-attendance"
+          element={
+            <ProtectedRoute role="employee">
+              <GiveAttendance/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/track-attendance"
+          element={
+            <ProtectedRoute role="employee">
+              <TrackAttendance/>
+            </ProtectedRoute>
+          }
+        />
+       
 
         {/* ✅ Admin Protected Routes */}
         <Route
