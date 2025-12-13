@@ -75,8 +75,8 @@ const EmployeeAttendanceModal = ({ onClose }) => {
         data.map((item) => (
           <div key={item.attendanceId} className="border p-2 rounded mb-2">
             <p><b>Date:</b> {extractFullDate(item.date)}</p>
-            <p><b>Entry Time:</b> {extractTime12(item.time_in)}</p>
-            <p><b>Exit Time:</b> {extractTime12(item.time_out)}</p>
+            <p><b>Entry Time:</b> {item.time_in ? extractTime12(item.time_in) : ""}</p>
+            <p><b>Exit Time:</b> {item.time_out ? extractTime12(item.time_out) : ""}</p>
             <p><b>Name:</b> {item.name}</p>
             <p><b>Email:</b> {item.email}</p>
             <p><b>Phone:</b> {item.phone}</p>
